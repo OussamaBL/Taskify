@@ -125,6 +125,7 @@ class TaskController extends Controller
                 "description"=>$validator['description'],
                 "priorite"=>$priorite,
                 "end_date"=>$validator['end_date'],
+                "status"=>$validator['status'],
                 "user_id"=>Auth::id(),
             ]);
 
@@ -265,6 +266,8 @@ class TaskController extends Controller
  */
     public function destroy($id){
         $task=Task::find($id);
+        $this->authorize('delete',$task);
+        
         if($task){
             $task->delete();
             return response()->json([
@@ -337,10 +340,10 @@ class TaskController extends Controller
  * )
  */
     public function update(TaskRequest $request,$id){
-        $validator=$request->validated();
         $task=Task::find($id);
-        if($task){
-           
+        $this->authorize('update',$task);
+        $validator=$request->validated();
+         if($task){
                 $task->update($validator);
                 if($task){
                     return response()->json([
@@ -370,6 +373,23 @@ class TaskController extends Controller
 
         $tasks=Task::all();
         return TaskResource::collection($tasks);
+    }
+
+    public function status(Request $request,$id){
+        $task=Task::find($id);
+        if($task){
+            $task->status=$request->status;
+            $task->save();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Task status changed successfully',
+            ],200);
+        }
+        else  
+            return response()->json([
+                'status'=>404,
+                'message'=>'Task not exist',
+            ],404);
     }
 
 

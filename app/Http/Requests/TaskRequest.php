@@ -60,6 +60,7 @@ class TaskRequest extends FormRequest
             'priorite' => 'required|string|in:low,medium,high',
             // 'start_date' => 'nullable|date|after_or_equal:today',
             'end_date' => 'nullable|date',
+            'status' => 'nullable|string',
         ];
     }
 }
