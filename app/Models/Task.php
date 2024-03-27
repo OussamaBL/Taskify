@@ -73,6 +73,7 @@ class Task extends Model
         'priorite',
         'start_date',
         'end_date',
+        'status',
         'user_id',
 
     ];

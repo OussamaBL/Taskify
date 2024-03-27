@@ -74,12 +74,16 @@ class AuthController extends Controller
                 'email'=>$register['email'],
                 'password'=> Hash::make($register['password']),
             ]);
-            $token=$user->createToken('Api Token')->plainTextToken;
+            $token=$user->createToken('simple_user')->plainTextToken;
             return response()->json([
-                'status'=>200,
+                'status'=>201,
                 'message'=>'User created successfully',
-                'token'=> $token,
-            ],200);
+                
+                'user'=> [
+                    'token'=> $token,
+                    'data'=> $user
+                ],
+            ],201);
             
         }
         catch(Exception $e){
@@ -165,12 +169,14 @@ class AuthController extends Controller
             $login=$request->validated();
             if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
                 $user=User::where('email',$login['email'])->first();
-                $token=$user->createToken('Api Token')->plainTextToken;
+                $token=$user->createToken('simple_user')->plainTextToken;
                 return response()->json([
                     "status"=>200,
                     "message"=> "User logged in successfully",
-                    "Informations User"=>$user,
-                    "token"=> $token,
+                    'user'=> [
+                        'token'=> $token,
+                        'data'=> $user
+                    ],
                 ],200);
             }
             else{
@@ -239,9 +245,9 @@ class AuthController extends Controller
         }
         else{
             return response()->json([
-                "status"=>201,
+                "status"=>401,
                 "message"=> 'Unauthorized',
-            ],201);
+            ],401);
         }
     }
 }

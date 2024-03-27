@@ -58,7 +58,7 @@ class TaskRequest extends FormRequest
             'title' => 'required|string|min:2|max:255',
             'description' => 'nullable|string',
             'priorite' => 'required|string|in:low,medium,high',
-            // 'start_date' => 'nullable|date|after_or_equal:today',
+            'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
             'status' => 'nullable|string',
         ];

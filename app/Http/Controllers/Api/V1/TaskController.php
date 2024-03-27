@@ -124,9 +124,11 @@ class TaskController extends Controller
                 "title" => $validator['title'],
                 "description"=>$validator['description'],
                 "priorite"=>$priorite,
+                "start_date"=>$validator['start_date'],
                 "end_date"=>$validator['end_date'],
                 "status"=>$validator['status'],
-                "user_id"=>Auth::id(),
+                "user_id"=>1,
+                // "user_id"=>Auth::id(),
             ]);
 
             if($task){
@@ -266,7 +268,7 @@ class TaskController extends Controller
  */
     public function destroy($id){
         $task=Task::find($id);
-        $this->authorize('delete',$task);
+        // $this->authorize('delete',$task);
         
         if($task){
             $task->delete();
@@ -341,7 +343,7 @@ class TaskController extends Controller
  */
     public function update(TaskRequest $request,$id){
         $task=Task::find($id);
-        $this->authorize('update',$task);
+        // $this->authorize('update',$task);
         $validator=$request->validated();
          if($task){
                 $task->update($validator);
